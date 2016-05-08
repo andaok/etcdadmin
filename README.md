@@ -5,6 +5,6 @@ A tool for managing Etcd Cluster.
 Include:
 
 [x] dashborad
-[X] etcd keys manager
+[x] etcd keys manager
 [x] reset api
 
