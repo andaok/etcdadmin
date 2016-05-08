@@ -1,0 +1,35 @@
+#-*- coding: utf-8 -*-
+
+
+from django.contrib import admin
+from action.models import EtcdCluster
+
+class EtcdClusterAdmin(admin.ModelAdmin):
+    list_display_links = ('name',)
+    list_filter = ('created_at',)
+    list_display = [
+        'name',
+        'cluster_address',
+        'status',
+        'protocol',
+        'created_at',
+        'updated_at',
+    ]
+    ordering = ['-updated_at']
+    fieldsets = (
+        (None, {
+            'fields': (
+                'name',
+                'cluster_address',
+                'status',
+                'protocol',
+            ),
+        }),
+    )
+
+admin.site.register(EtcdCluster, EtcdClusterAdmin)
+
+
+def make_etcd_cluster_online(modeladmin, request, queryset):
+    queryset.update(status='1')
+    make_etcd_cluster_online.short_description = "Mark selected etcd cluster online."
