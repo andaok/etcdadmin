@@ -1,31 +1,17 @@
+#-*- coding: utf-8 -*-
+
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect, Http404
 from django.template import RequestContext
 from .models import EtcdCluster
 
 import etcd 
+from reprlib import recursive_repr
 
-dir0 = True
-
-def getEtcdHosts(s):
-    #s="192.168.56.20:4001,192.168.56.21:4001,192.168.56.22:4001";
-    ehost = EctdCluster.object.get()
-    if ',' in s:
-        print(s)
-        host = tuple([tuple(r.split(":")) for r in s.split(",")])
-    else:
-        host = tuple(s)
-
-    return host
-
-def EtcdConnect(host):
-    etcdClient = etcd.Client(host=host, protocol='http', allow_reconnect=True)
-    return etcdClient
 
 def home(request):
-        
-    #r = es.read('/', recursive=True, sorted=True)
-    r = es.read('/', sorted=True) 
+
+    r = es.read('/', recursive=True, sorted=True) 
     
     for child in r.children:
         print(child.key, child.value)
