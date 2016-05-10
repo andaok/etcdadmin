@@ -7,11 +7,20 @@ import etcd
 
 dir0 = True
 
-#def EtcdConnect(hosts):
-    
+def getEtcdHosts(s):
+    #s="192.168.56.20:4001,192.168.56.21:4001,192.168.56.22:4001";
+    ehost = EctdCluster.object.get()
+    if ',' in s:
+        print(s)
+        host = tuple([tuple(r.split(":")) for r in s.split(",")])
+    else:
+        host = tuple(s)
 
-es = etcd.Client(host=(('192.168.56.20', 4001), ('192.168.56.20', 4001), ('192.168.56.20', 4001)), protocol='http', allow_reconnect=True)
-#es = etcd.Client(host="192.168.56.20", port=4001, protocol='http', allow_reconnect=True)
+    return host
+
+def EtcdConnect(host):
+    etcdClient = etcd.Client(host=host, protocol='http', allow_reconnect=True)
+    return etcdClient
 
 def home(request):
         
