@@ -4,20 +4,15 @@
 <head>
 	<meta charset="UTF-8">
 	<title>etcdAdmin</title>
-	<link rel="stylesheet" type="text/css" href="{% static "assets/semantic/semantic.main.css" %}">
+	<link rel="stylesheet" type="text/css" href="{% static "assets/semantic/semantic.min.css" %}">
 	<link rel="stylesheet" type="text/css" href="{% static "assets/css/common.css" %}">
 	{% block extra-css %}{% endblock %}
 </head>
 <body>
 	<div class="wrap">
-		<div class="top-header">
-			<p>uuuuuu</p>
-		</div>
-		<div class="footer">
-			<p>uuuuuu</p>
-		</div>
+		{% block content %} {% endblock %}
 	</div>
 </body>
-<script type="text/javascript" src="{% static "assets/semantic/semantic.main.js" %}"></script>
+<script type="text/javascript" src="{% static "assets/semantic/semantic.min.js" %}"></script>
 {% block extra-js %} {% endblock %}
 </html>
