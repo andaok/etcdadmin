@@ -22,11 +22,11 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', action_views.home, name='home'),
     url(r'^keys/$', action_views.get_dir, name='getdir'),
-#    url(r'^keys/set/(?P<key>.*)', action_views.set_key, name='setkey'),
-#    url(r'^keys/update/(?P<key>.*)', action_views.update_key, name='updatekey'),
-#    url(r'^keys/del/(?P<key>.*)', action_views.del_key, name='delkey'),
+    url(r'^keys/set/(?P<key>.*)', action_views.set_key, name='setkey'),
+    url(r'^keys/update/(?P<key>.*)', action_views.update_key, name='updatekey'),
+    url(r'^keys/del/(?P<key>.*)', action_views.delete_key, name='delkey'),
 #    url(r'^status', 'action_views.status', name='etcdstatus'),
-#    
+
     # reset api
     #url(r'^api/', 'action.views.api.*', name='api'),
 ]

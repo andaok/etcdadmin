@@ -31,23 +31,36 @@ def get_dir(request):
     )
 
 
-#def update_key(request, key, value=None):
-#    key_str = str(key)
-#    eClient.write(key_str, value)
-#    eClient.update(result)
-#    return render_to_response(
-#        'updatekey.html',
-#        context_instance=RequestContext(request)
-#    )
+def set_key(request, key, value=None):
+    
+    try:
+        eClient.write(str(key), str(value))
+    except etcd.EtcdKeyNotFound:
+        print("key or value could not be none.")  
+        
+    return render_to_response(
+        'setkey.html',
+        context_instance=RequestContext(request)
+    )
 
-   
-#def set_key(request, key, value=None):
-#    key_str = str(key)
-#    eClient.write(key_str, value)
-#    return render_to_response(
-#        'setkey.html',
-#        context_instance=RequestContext(request)
-#    )
+
+def update_key(request, key, value=None):
+    try:
+        eClient.update(key, value)
+    except etcd.EtcdException:
+        print("etcd key update error.")
+    return render_to_response(
+        'updatekey.html',
+        context_instance=RequestContext(request)
+    )
+
+
+def delete_key(request, key=None):
+    
+    try:
+        eClient.delete('/nodes/n1')
+    except etcd.EtcdKeyNotFound:
+        print("key not found")
 #
 
 
