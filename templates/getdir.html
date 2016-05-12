@@ -1,0 +1,4 @@
+{% for dir in dirs.children %}
+[x] - Num: #{{ forloop.counter }} key: {{ dir.key }} value: {{ dir.value }} ttl: {{ dir.ttl|default_if_none:"Never Expire" }} - <a href="#">Edit</a>/ <a href="#">DEL</a></br>
+{% endfor %}
+
