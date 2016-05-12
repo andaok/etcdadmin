@@ -19,11 +19,11 @@ from django.contrib import admin
 urlpatterns = [
     # operator
     url(r'^admin/', admin.site.urls),
-    url(r'^$', 'action.views.home', name='home'),
-    url(r'^keylist/(?P<key>.*)', 'action.views.get_dir', name='getdir'),
-#    url(r'^set/(?P<key>.*)', 'action.views.set_key', name='setkey'),
-#    url(r'^update/(?P<key>.*)', 'action.views.update_key', name='updatekey'),
-#    url(r'^del/(?P<key>.*)', 'action.views.del_key', name='delkey'),
+    url(r'^keys/$', 'action.views.home', name='home'),
+    url(r'^keys/(?P<key>.*)', 'action.views.get_dir', name='getdir'),
+#    url(r'^keys/set/(?P<key>.*)', 'action.views.set_key', name='setkey'),
+#    url(r'^keys/update/(?P<key>.*)', 'action.views.update_key', name='updatekey'),
+#    url(r'^keys/del/(?P<key>.*)', 'action.views.del_key', name='delkey'),
 #    url(r'^status', 'action.views.status', name='etcdstatus'),
 #    
     # reset api
