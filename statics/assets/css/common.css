@@ -54,6 +54,9 @@ a.active {
 .main {
 
 }
+.cluster-list {
+    margin-top: 20px;
+}
 .ui.table {
     border-radius: 0;
     border: 0px;

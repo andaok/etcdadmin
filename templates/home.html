@@ -2,5 +2,30 @@
 
 {% block content %}
 
-[x] - key views <a href="/keys/">etcd keys view</a></br>
+<div class="cluster-list">
+    <div class="cluster">
+        <h2>etcd cluster 0</h2>
+        <div class="cluster-info">
+            <p><a href="/keys/">hosts:ports:user?tls=flase</a></p>
+        </div>
+    </div>
+    <div class="cluster">
+        <h2>etcd cluster 1</h2>
+        <div class="cluster-info">
+            <p><a href="#">hosts:ports:user?tls=flase</a></p>
+        </div>
+    </div>
+    <div class="cluster">
+        <h2>etcd cluster 2</h2>
+        <div class="cluster-info">
+            <p><a href="#">hosts:ports:user?tls=flase</a></p>
+        </div>
+    </div>
+    <div class="cluster">
+        <h2>etcd cluster 3</h2>
+        <div class="cluster-info">
+            <p><a href="#">hosts:ports:user?tls=flase</a></p>
+        </div>
+    </div>
+</div>
 {% endblock %}
