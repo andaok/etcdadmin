@@ -3,7 +3,6 @@
 
 from django.db import models
 from django.utils.translation import ugettext as _
-
 from datetime import datetime
 
 
@@ -12,6 +11,7 @@ PROTOCOLS = (('a', 'HTTP'), ('b', 'HTTPS'))
 
 class EtcdCluster(models.Model):
     name = models.CharField(max_length=50)
+    serial_number = models.CharField(max_length=100, unique=True)
     cluster_address = models.CharField(max_length=200)
     status = models.CharField(max_length=1, choices=STATUS, default=1)
     protocol = models.CharField(max_length=1, choices=PROTOCOLS, default='a')
@@ -26,5 +26,11 @@ class EtcdCluster(models.Model):
     def __unicode__(self):
         return "%s - %s  %s / %s" % (self.name, self.cluster_address, self.status, self.created_at)
 
+#     @staticmethod
+#     def get_serial_number(eid):
+#         ecid = EtcdCluster.objects.get(id=eid).id
+#         serial_number = ecid.rjust(4, '0')
+#         return serial_number
+    
     def save(self):
         super(EtcdCluster, self).save()

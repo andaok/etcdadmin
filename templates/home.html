@@ -3,29 +3,13 @@
 {% block content %}
 
 <div class="cluster-list">
+	{% for ec in ecs %}
     <div class="cluster">
         <h2>etcd cluster 0</h2>
         <div class="cluster-info">
-            <p><a href="/keys/">hosts:ports:user?tls=flase</a></p>
+            <p><a href="/{{ ec.serial_number }}/keys/">{{ ec.cluster_address }}:user?tls=flase</a></p>
         </div>
     </div>
-    <div class="cluster">
-        <h2>etcd cluster 1</h2>
-        <div class="cluster-info">
-            <p><a href="#">hosts:ports:user?tls=flase</a></p>
-        </div>
-    </div>
-    <div class="cluster">
-        <h2>etcd cluster 2</h2>
-        <div class="cluster-info">
-            <p><a href="#">hosts:ports:user?tls=flase</a></p>
-        </div>
-    </div>
-    <div class="cluster">
-        <h2>etcd cluster 3</h2>
-        <div class="cluster-info">
-            <p><a href="#">hosts:ports:user?tls=flase</a></p>
-        </div>
-    </div>
+	{% endfor %}
 </div>
 {% endblock %}

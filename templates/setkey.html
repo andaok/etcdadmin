@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block ec-guide %}
+<div class="nav-guide">
+    <div class="container">
+        <div class="ui breadcrumb">
+            <a class="section"><a href="/">Home</a></a>
+            <i class="right angle icon divider"></i>
+            <div class="active section">Cluster-1@192.168.56.2:4001</div>
+            <i class="right angle icon divider"></i>
+            <a class="section"><a href="#" title="add new key"><i class="plus icon"></i></a></a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block content %}
+<table class="ui very compact table">
+    <thead>
+        <tr>
+            <th>Num</th>
+            <th>Keys</th>
+            <th>Values</th>
+            <th>TTL</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+  <tbody>
+    {% for dir in dirs.children %}
+    <tr>
+      <td>{{ forloop.counter }}</td>
+      <td>{{ dir.key }}</td>
+      <td>{{ dir.value }}</td>
+      <td>{{ dir.ttl|default_if_none:"Never Expire" }}</td>
+      <td><a href="#"><i class="edit icon"></i></a> / <a href="#"><i class="remove icon"></i></a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}
