@@ -2,14 +2,48 @@
 
 {% block content %}
 
-<div class="cluster-list">
-	{% for ec in ecs %}
-    <div class="cluster">
-        <h2>etcd cluster 0</h2>
-        <div class="cluster-info">
-            <p><a href="/{{ ec.serial_number }}/keys/">{{ ec.cluster_address }}:user?tls=flase</a></p>
+
+<div class="nav-guide">
+    <div class="container">
+        <div class="ui breadcrumb">
+            <a class="section">Etcd Cluster List</a>
+            <i class="right angle icon divider"></i>
+            <a class="section"><a href="#" title="add a new etcd cluster"><i class="plus icon"></i></a></a>
         </div>
     </div>
-	{% endfor %}
+</div>
+<div class="etcd-cluster-list">
+    {% ifequal ecs.count 0 %}
+    <center class="etcd-cluster-count-nop"><h2>First step, you must <a href="#">add a etcd cluster.</a></h2></center>
+    {% else %}
+    <table class="ui very compact table">
+        <thead>
+            <tr>
+                <th>Num</th>
+                <th>Protocal</th>
+                <th>Endpoints</th>
+                <th>Authentication</th>
+                <th>Status</th>
+                <th>CreateBy</th>
+                <th>ModifiedBy</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+      <tbody>
+        {% for ec in ecs %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>http</td>
+          <td><a href="/{{ ec.serial_number }}/keys/">http://{{ ec.cluster_address }}:2379?tls=flase</a></td>
+          <td>False</td>
+          <td>ON</td>
+          <td>{{ ec.created_at|date:'Y-m-d H:i' }}</td>
+          <td>{{ ec.updated_at|date:'Y-m-d H:i' }}</td>
+          <td><a href="#"><i class="edit icon"></i></a> / <a href="#"><i class="remove icon"></i></a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endifequal %}
 </div>
 {% endblock %}

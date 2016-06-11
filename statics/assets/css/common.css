@@ -102,3 +102,29 @@ a.active {
 .ui.table thead th {
     background: transparent;
 }
+
+
+
+/* home */
+.etcd-cluster-list {
+    margin-top: 20px;
+}
+.etcd-cluster-count-nop {
+    margin-top: 45px;
+    color: #BBC2C5;
+}
+
+/* footer */
+.footer {
+    overflow: hidden;
+    font-size: 12px;
+    text-align: center;
+    padding-top: 4px;
+    margin: 45px 0 65px;
+    border-top: 1px solid rgba(34,36,38,.1);
+}
+
+/* common */
+.etcd-cluster-list, .etcd-cluster-dirs {
+    min-height: 400px;
+}

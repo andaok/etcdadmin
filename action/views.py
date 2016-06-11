@@ -3,7 +3,7 @@
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.template import RequestContext
 from etcdadmin.settings import ETCDCLUSTER_PREFIX
 from .models import EtcdCluster
@@ -13,7 +13,7 @@ from urllib.parse import urlparse
 
 """
 >>> o = urlparse('http://www.cwi.nl:80/%7Eguido/Python.html')
->>> o   
+>>> o
 ParseResult(scheme='http', netloc='www.cwi.nl:80', path='/%7Eguido/Python.html',
             params='', query='', fragment='')
 >>> o.scheme
@@ -37,8 +37,11 @@ ParseResult(scheme='http', netloc='www.cwi.nl:80', path='/%7Eguido/Python.html',
 
 def home(request):
 
-    ecs = EtcdCluster.objects.filter(status=1)
-    
+    try:
+        ecs = EtcdCluster.objects.filter(status=1)
+    except EtcdCluster.DoesNotExist:
+        ecs = None
+
     return render_to_response(
         'home.html', {
             "ecs": ecs
@@ -52,8 +55,8 @@ def get_dir(request, ecsn=None):
     dirs = None
     try:
         print(ecsn)
-        etcd_cluster = EtcdCluster.objects.get(serial_number=ecsn)   
-        print(etcd_cluster.name) 
+        etcd_cluster = EtcdCluster.objects.get(serial_number=ecsn)
+        print(etcd_cluster.name)
         eClient = etcd.Client(host=etcd_cluster.cluster_address, port=4001, protocol="http", allow_reconnect=True)
         dirs = eClient.read(str(ETCDCLUSTER_PREFIX), recursive=True, sorted=True)
 #           for child in r.children:
