@@ -2,11 +2,12 @@
 
 from django.contrib import messages
 from django.core.urlresolvers import reverse
-from django.shortcuts import render_to_response
-from django.http import HttpResponseRedirect, Http404
+from django.shortcuts import render_to_response, render
+from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from etcdadmin.settings import ETCDCLUSTER_PREFIX
 from .models import EtcdCluster
+from .forms import EtcdClusterForm
 
 import etcd
 from urllib.parse import urlparse
@@ -49,6 +50,25 @@ def home(request):
         context_instance=RequestContext(request)
     )
 
+def add_etcd_cluster(request):
+    
+    form = EtcdClusterForm()
+    if request.method == "POST":
+        form = EtcdClusterForm(request.POST)
+        if form.is_valid():
+            ec = form.save(commit=False)
+            print(request.POST['ec_name'])
+            ec.name = request.POST['ec_name']
+            ec.prefix = request.POST['ec_prefix']
+            ec.endpoint = request.POST['ec_endpoint']
+            print(ec)
+            ec.save()
+            return HttpResponseRedirect('/')
+    else:
+        print("something is wrong.")
+        form = EtcdClusterForm()
+        
+    return render(request, 'addetcdcluster.html', locals())
 
 def get_dir(request, ecsn=None):
 
@@ -57,7 +77,7 @@ def get_dir(request, ecsn=None):
         print(ecsn)
         etcd_cluster = EtcdCluster.objects.get(serial_number=ecsn)
         print(etcd_cluster.name)
-        eClient = etcd.Client(host=etcd_cluster.cluster_address, port=4001, protocol="http", allow_reconnect=True)
+        eClient = etcd.Client(host=etcd_cluster.cluster_nodes, port=4001, protocol="http", allow_reconnect=True)
         dirs = eClient.read(str(ETCDCLUSTER_PREFIX), recursive=True, sorted=True)
 #           for child in r.children:
 #           print(child.key, child.value)

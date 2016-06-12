@@ -110,21 +110,32 @@ a.active {
     margin-top: 20px;
 }
 .etcd-cluster-count-nop {
-    margin-top: 45px;
+    margin-top: 85px;
     color: #BBC2C5;
+}
+
+/* add etcd cluster*/
+.add-etcd-cluster {
+    margin-top: 30px;
 }
 
 /* footer */
 .footer {
     overflow: hidden;
-    font-size: 12px;
     text-align: center;
     padding-top: 4px;
-    margin: 45px 0 65px;
+    margin: 25px 0 45px;
+}
+.footer .container {
     border-top: 1px solid rgba(34,36,38,.1);
 }
 
+.footer p {
+    padding: 10px;
+    font-size: 12px;
+}
+
 /* common */
-.etcd-cluster-list, .etcd-cluster-dirs {
+.etcd-cluster-list, .etcd-cluster-dirs, .add-etcd-cluster {
     min-height: 400px;
 }

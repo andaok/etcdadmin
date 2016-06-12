@@ -10,7 +10,8 @@ class EtcdClusterAdmin(admin.ModelAdmin):
     list_display = [
         'name',
         'serial_number',
-        'cluster_address',
+        'cluster_nodes',
+        'cluster_endpoint',
         'status',
         'protocol',
         'created_at',
@@ -22,7 +23,8 @@ class EtcdClusterAdmin(admin.ModelAdmin):
             'fields': (
                 'name',
                 'serial_number',
-                'cluster_address',
+                'cluster_nodes',
+                'cluster_endpoint',
                 'status',
                 'protocol',
             ),

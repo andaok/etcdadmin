@@ -8,7 +8,7 @@
         <div class="ui breadcrumb">
             <a class="section">Etcd Cluster List</a>
             <i class="right angle icon divider"></i>
-            <a class="section"><a href="#" title="add a new etcd cluster"><i class="plus icon"></i></a></a>
+            <a class="section"><a href="/cluster/add/" title="add a new etcd cluster"><i class="plus icon"></i></a></a>
         </div>
     </div>
 </div>
@@ -33,8 +33,8 @@
         {% for ec in ecs %}
         <tr>
           <td>{{ forloop.counter }}</td>
-          <td>http</td>
-          <td><a href="/{{ ec.serial_number }}/keys/">http://{{ ec.cluster_address }}:2379?tls=flase</a></td>
+          <td>{{ ec.get_protocol_display }}</td>
+          <td><a href="/ec-{{ ec.serial_number }}/keys/">http://{{ ec.cluster_nodes }}:2379?tls=flase</a></td>
           <td>False</td>
           <td>ON</td>
           <td>{{ ec.created_at|date:'Y-m-d H:i' }}</td>
