@@ -21,13 +21,13 @@ urlpatterns = [
     # operator
     url(r'^admin/', admin.site.urls),
     url(r'^$', action_views.home, name='home'),
-    
+
     # etcd clusters
     url(r'^cluster/add/$', action_views.add_etcd_cluster, name='addetcdcluster'),
-    
+
     # etcd cluster dirs
     url(r'^ec-(\d{4})/keys/$', action_views.get_dir, name='getdir'),
-    url(r'^ec-(\d{4})/keys/set/(?P<key>.*)', action_views.set_key, name='setkey'),
+    url(r'^ec-(\d{4})/keys/set/$', action_views.set_key, name='setkey'),
     url(r'^ec-(\d{4})/keys/update/(?P<key>.*)', action_views.update_key, name='updatekey'),
     url(r'^ec-(\d{4})/keys/del/(?P<key>.*)', action_views.delete_key, name='delkey'),
 #    url(r'^status', 'action_views.status', name='etcdstatus'),

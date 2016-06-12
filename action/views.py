@@ -51,7 +51,7 @@ def home(request):
     )
 
 def add_etcd_cluster(request):
-    
+
     form = EtcdClusterForm()
     if request.method == "POST":
         form = EtcdClusterForm(request.POST)
@@ -67,14 +67,13 @@ def add_etcd_cluster(request):
     else:
         print("something is wrong.")
         form = EtcdClusterForm()
-        
+
     return render(request, 'addetcdcluster.html', locals())
 
 def get_dir(request, ecsn=None):
 
     dirs = None
     try:
-        print(ecsn)
         etcd_cluster = EtcdCluster.objects.get(serial_number=ecsn)
         print(etcd_cluster.name)
         eClient = etcd.Client(host=etcd_cluster.cluster_nodes, port=4001, protocol="http", allow_reconnect=True)
@@ -94,10 +93,10 @@ def get_dir(request, ecsn=None):
 
 def set_key(request, key=None, value=None):
 
-    try:
-        eClient.write(str(key), str(value))
-    except etcd.EtcdKeyNotFound:
-        print("key or value could not be none.")
+    # try:
+    #     eClient.write(str(key), str(value))
+    # except etcd.EtcdKeyNotFound:
+    #     print("key or value could not be none.")
 
     return render_to_response(
         'setkey.html',
