@@ -30,8 +30,10 @@ urlpatterns = [
     url(r'^ec-(\d{4})/keys/set/$', action_views.set_key, name='setkey'),
     url(r'^ec-(\d{4})/keys/update/(?P<key>.*)', action_views.update_key, name='updatekey'),
     url(r'^ec-(\d{4})/keys/del/(?P<key>.*)', action_views.delete_key, name='delkey'),
-#    url(r'^status', 'action_views.status', name='etcdstatus'),
+    
+    # etcd cluster state
+    url(r'^status/ec-(\d{4})', action_views.ec_status, name='etcdcluster_status'),
 
-    # reset api
+    # etcd cluster reset api
     #url(r'^api/', 'action.views.api.*', name='api'),
 ]

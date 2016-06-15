@@ -34,9 +34,15 @@
         <tr>
           <td>{{ forloop.counter }}</td>
           <td>{{ ec.get_protocol_display }}</td>
-          <td><a href="/ec-{{ ec.serial_number }}/keys/">http://{{ ec.cluster_nodes }}:2379?tls=flase</a></td>
+          <td><a href="/ec-{{ ec.serial_number }}/keys/">{{ ec.cluster_endpoint }}?tls=flase</a></td>
           <td>False</td>
-          <td>ON</td>
+          <td>
+          {% ifequal ec.status '1' %}
+            <a href="/status/ec-{{ ec.serial_number }}">{{ ec.get_status_display }}</a>
+          {% else %}
+          	UNKOWN
+          {% endifequal %}
+          </td>
           <td>{{ ec.created_at|date:'Y-m-d H:i' }}</td>
           <td>{{ ec.updated_at|date:'Y-m-d H:i' }}</td>
           <td><a href="#"><i class="edit icon"></i></a> / <a href="#"><i class="remove icon"></i></a></td>

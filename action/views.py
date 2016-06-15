@@ -5,12 +5,14 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response, render
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
-from etcdadmin.settings import ETCDCLUSTER_PREFIX
+from etcdadmin.settings import ETCDCLUSTER_PREFIX, ETCDCLUSTER_STATE
 from .models import EtcdCluster
 from .forms import EtcdClusterForm
-from utils import etcd_connect
-import etcd
+from utils.parse_tools import parseURL
 
+import etcd
+import json
+import requests
 
 #eClient = etcd.Client(host="192.168.56.2", port=4001, protocol="http", allow_reconnect=True)
 
@@ -28,6 +30,28 @@ def home(request):
         context_instance=RequestContext(request)
     )
 
+
+def ec_status(request, ecsn=None):
+    
+    try:
+        ec = EtcdCluster.objects.get(serial_number=ecsn)
+        API_URL = ec.cluster_endpoint + ETCDCLUSTER_STATE
+        print (ec.cluster_endpoint)
+        
+        try:
+            req = requests.get(API_URL, verify=False)
+            #content = json.loads(request.content).decode()
+            etcd_ping = 1
+            
+        except requests.exceptions.ConnectionError as ex:
+            print("ERROR talking to etcd API: %s" % ex.message)
+            etcd_ping = 0
+
+    except EtcdCluster.DoesNotExist:
+        print("etcd cluster is not found.")
+        
+    return render(request, 'ec_status.html', locals())
+
 def add_etcd_cluster(request):
 
     form = EtcdClusterForm()
@@ -40,6 +64,7 @@ def add_etcd_cluster(request):
             ec.prefix = request.POST['ec_prefix']
             ec.endpoint = request.POST['ec_endpoint']
             print(ec)
+            parseURL(ec.endpoint)
             ec.save()
             return HttpResponseRedirect('/')
     else:
@@ -52,9 +77,10 @@ def get_dir(request, ecsn=None):
 
     dirs = None
     try:
-        etcd_cluster = EtcdCluster.objects.get(serial_number=ecsn)
-        print(etcd_cluster.name)
-        eClient = etcd.Client(host=etcd_cluster.cluster_nodes, port=4001, protocol="http", allow_reconnect=True)
+        ec = EtcdCluster.objects.get(serial_number=ecsn)
+        print(ec.name)
+        ec_endpoint = parseURL(ec.cluster_endpoint)
+        eClient = etcd.Client(host=ec_endpoint['host'], port=4001, protocol="http", allow_reconnect=True)
         dirs = eClient.read(str(ETCDCLUSTER_PREFIX), recursive=True, sorted=True)
 #           for child in r.children:
 #           print(child.key, child.value)

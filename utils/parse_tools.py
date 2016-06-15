@@ -24,9 +24,12 @@ ParseResult(scheme='http', netloc='www.cwi.nl:80', path='/%7Eguido/Python.html',
 'http://www.cwi.nl/%7Eguido/FAQ.html'
 """
 
-def parse_url(url):
+def parseURL(url):
     result = {}
     result['host'] = urlparse(url).hostname
     result['port'] = urlparse(url).port
     result['scheme'] = urlparse(url).scheme
     return result
+
+if __name__ == "__main__":
+    parseURL("http://a.com:80/a.py")

@@ -139,3 +139,4 @@ MESSAGE_TAGS = {
 
 # EtcdCluster
 ETCDCLUSTER_PREFIX = '/'
+ETCDCLUSTER_STATE = '/v2/stats/store'

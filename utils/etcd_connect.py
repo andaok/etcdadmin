@@ -3,6 +3,7 @@
 import etcd
 from action.models import EtcdCluster
 
+
 def getEtcdHosts(cluster, cid):
     #s="192.168.56.20:4001,192.168.56.21:4001,192.168.56.22:4001";
     etcd_ins = EtcdCluster.objects.filter(int(cid))
@@ -16,5 +17,7 @@ def getEtcdHosts(cluster, cid):
     return host
 
 def EtcdConnect(host):
-    etcdClient = etcd.Client(host=host, protocol='http', allow_reconnect=True)
+    etcdClient = etcd.Client(host=host, protocol='http', version_prefix='/', allow_reconnect=True)
     return etcdClient
+
+    
