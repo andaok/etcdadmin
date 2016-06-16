@@ -13,7 +13,7 @@ from utils.parse_tools import parseURL
 import etcd
 import json
 import requests
-from urllib.request import urlopen
+
 #from operator import itemgetter
 
 #eClient = etcd.Client(host="192.168.56.2", port=4001, protocol="http", allow_reconnect=True)
@@ -77,21 +77,15 @@ def get_dir(request, ecsn=None):
     dirs = None
     try:
         ec = EtcdCluster.objects.get(serial_number=ecsn)
-        print(ec.name)
         ec_endpoint = parseURL(ec.cluster_endpoint)
-        eClient = etcd.Client(host=ec_endpoint['host'], port=4001, protocol="http", allow_reconnect=True)
+        eClient = etcd.Client(host=ec_endpoint['host'], port=ec_endpoint['port'], protocol=ec_endpoint['scheme'], allow_reconnect=True)
         dirs = eClient.read(str(ETCDCLUSTER_PREFIX), recursive=True, sorted=True)
 #           for child in r.children:
 #           print(child.key, child.value)
     except EtcdCluster.DoesNotExist:
         print("etcd cluster is not found.")
 
-    return render_to_response(
-        'get_dir.html', {
-            "dirs": dirs
-        },
-        context_instance=RequestContext(request)
-    )
+    return render(request, 'get_dir.html', locals())
 
 
 def set_key(request, key=None, value=None):
@@ -107,28 +101,47 @@ def set_key(request, key=None, value=None):
     )
 
 
-def update_key(request, key, value=None):
+def update_key(request, ecsn=None):
+    
     try:
-        eClient.update(key, value)
-    except etcd.EtcdException:
-        print("etcd key update error.")
+        ec = EtcdCluster.objects.get(cluster_endpoint=ecsn)
+        ec_endpoint = parseURL(ec.cluster_endpoint)
+        eClient = etcd.Client(host=ec_endpoint['host'], port=ec_endpoint['port'], protocol=ec_endpoint['scheme'], allow_reconnect=True)
+        key = request.GET.get('key')
+        value = request.GET.get('value')
+        try:
+            eClient.update(key, value)
+        except etcd.EtcdException:
+            print("etcd key update error.")
+    
+    except EtcdCluster.DoesNotExist:
+        print("etcd cluster is not found.")
+        
     return render_to_response(
         'update_key.html',
         context_instance=RequestContext(request)
     )
 
 
-def delete_key(request, key=None):
+def delete_key(request, ecsn=None):
 
     try:
-        eClient.delete(key, dir=True)
-        print("dir(%s) has deleted" % key)
-        messages.add_message(request, messages.INFO, ("dir(%s) has deleted" % key))
-    except etcd.EtcdKeyNotFound:
-        if eClient.read(key).dir:
-            print("dir(%s) is not empty" % key)
-            messages.add_message(request, messages.ERROR, ("dir(%s) is not empty" % key))
-        else:
-            print("dir(%s) not found" % key)
+        ec = EtcdCluster.objects.get(cluster_endpoint=ecsn)
+        ec_endpoint = parseURL(ec.cluster_endpoint)
+        eClient = etcd.Client(host=ec_endpoint['host'], port=ec_endpoint['port'], protocol=ec_endpoint['scheme'], allow_reconnect=True)
+        key = request.GET.get('key')
+        try:
+            eClient.delete(key, dir=True)
+            print("dir(%s) has deleted" % key)
+            messages.add_message(request, messages.INFO, ("dir(%s) has deleted" % key))
+        except etcd.EtcdKeyNotFound:
+            if eClient.read(key).dir:
+                print("dir(%s) is not empty" % key)
+                messages.add_message(request, messages.ERROR, ("dir(%s) is not empty" % key))
+            else:
+                print("dir(%s) not found" % key)
+
+    except EtcdCluster.DoesNotExist:
+        print("etcd cluster is not found.")
 
     return HttpResponseRedirect(reverse('action:getdir'))

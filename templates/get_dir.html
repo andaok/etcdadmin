@@ -17,6 +17,7 @@
 {% endblock %}
 {% block content %}
 <div class="etcd-cluster-dirs">
+	{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
     <table class="ui very compact table">
         <thead>
             <tr>
@@ -34,7 +35,7 @@
           <td>{{ dir.key }}</td>
           <td>{{ dir.value }}</td>
           <td>{{ dir.ttl|default_if_none:"Never Expire" }}</td>
-          <td><a href="#"><i class="edit icon"></i></a> / <a href="#"><i class="remove icon"></i></a></td>
+          <td><a href="/ec-{{ ec.serial_number }}/keys/update?key={{ dir.key }}"><i class="edit icon"></i></a> / <a href="/ec-{{ ec.serial_number }}/keys/del?key={{ dir.key }}"><i class="remove icon"></i></a></td>
         </tr>
         {% endfor %}
       </tbody>
