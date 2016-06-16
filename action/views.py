@@ -19,7 +19,7 @@ import requests
 def home(request):
 
     try:
-        ecs = EtcdCluster.objects.filter(status=1)
+        ecs = EtcdCluster.objects.all()
     except EtcdCluster.DoesNotExist:
         ecs = None
 
@@ -42,6 +42,8 @@ def ec_status(request, ecsn=None):
             req = requests.get(API_URL, verify=False)
             #content = json.loads(request.content).decode()
             etcd_ping = 1
+            ls = sorted(req.content)
+            print (ls)
             
         except requests.exceptions.ConnectionError as ex:
             print("ERROR talking to etcd API: %s" % ex.message)

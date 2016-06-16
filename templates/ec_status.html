@@ -1,6 +1,5 @@
-
-
 {% extends 'base.html' %}
+{% load get_extras %}
 
 {% block ec-guide %}
 <div class="nav-guide">
@@ -19,5 +18,9 @@
 <div class="etcd-cluster-dirs">
 	<p>{{ etcd_ping }}</p>
 	<p>{{ req.content }}</p>
+
+	{% for item in ls %} 
+    <p>{{ req.content|get_item:item.getsSuccess }}</p>
+    {% endfor %}
 </div>
 {% endblock %}

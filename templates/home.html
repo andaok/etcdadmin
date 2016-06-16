@@ -37,10 +37,14 @@
           <td><a href="/ec-{{ ec.serial_number }}/keys/">{{ ec.cluster_endpoint }}?tls=flase</a></td>
           <td>False</td>
           <td>
+          {% ifequal ec.status '0' %}
+            DOWN
+          {% endifequal %}
           {% ifequal ec.status '1' %}
-            <a href="/status/ec-{{ ec.serial_number }}">{{ ec.get_status_display }}</a>
-          {% else %}
-          	UNKOWN
+          	<a href="/status/ec-{{ ec.serial_number }}">{{ ec.get_status_display }}</a>
+          {% endifequal %}
+          {% ifequal ec.status '2' %}
+          	READY
           {% endifequal %}
           </td>
           <td>{{ ec.created_at|date:'Y-m-d H:i' }}</td>
