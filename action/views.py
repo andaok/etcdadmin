@@ -13,6 +13,8 @@ from utils.parse_tools import parseURL
 import etcd
 import json
 import requests
+from urllib.request import urlopen
+#from operator import itemgetter
 
 #eClient = etcd.Client(host="192.168.56.2", port=4001, protocol="http", allow_reconnect=True)
 
@@ -36,15 +38,11 @@ def ec_status(request, ecsn=None):
     try:
         ec = EtcdCluster.objects.get(serial_number=ecsn)
         API_URL = ec.cluster_endpoint + ETCDCLUSTER_STATE
-        print (ec.cluster_endpoint)
         
         try:
             req = requests.get(API_URL, verify=False)
-            #content = json.loads(request.content).decode()
-            etcd_ping = 1
-            ls = sorted(req.content)
-            print (ls)
-            
+            content = json.loads(req.content.decode('utf8'))
+ 
         except requests.exceptions.ConnectionError as ex:
             print("ERROR talking to etcd API: %s" % ex.message)
             etcd_ping = 0

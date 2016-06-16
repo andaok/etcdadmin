@@ -17,10 +17,7 @@
 {% block content %}
 <div class="etcd-cluster-dirs">
 	<p>{{ etcd_ping }}</p>
-	<p>{{ req.content }}</p>
-
-	{% for item in ls %} 
-    <p>{{ req.content|get_item:item.getsSuccess }}</p>
-    {% endfor %}
+	<p>{{ content }}</p>
+	<p>{{ content|get_item:"getsSuccess" }}</p>
 </div>
 {% endblock %}
