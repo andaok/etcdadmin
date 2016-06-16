@@ -45,7 +45,6 @@ def ec_status(request, ecsn=None):
  
         except requests.exceptions.ConnectionError as ex:
             print("ERROR talking to etcd API: %s" % ex.message)
-            etcd_ping = 0
 
     except EtcdCluster.DoesNotExist:
         print("etcd cluster is not found.")
@@ -71,7 +70,7 @@ def add_etcd_cluster(request):
         print("something is wrong.")
         form = EtcdClusterForm()
 
-    return render(request, 'addetcdcluster.html', locals())
+    return render(request, 'add_ec.html', locals())
 
 def get_dir(request, ecsn=None):
 
@@ -88,7 +87,7 @@ def get_dir(request, ecsn=None):
         print("etcd cluster is not found.")
 
     return render_to_response(
-        'getdir.html', {
+        'get_dir.html', {
             "dirs": dirs
         },
         context_instance=RequestContext(request)
@@ -103,7 +102,7 @@ def set_key(request, key=None, value=None):
     #     print("key or value could not be none.")
 
     return render_to_response(
-        'setkey.html',
+        'set_key.html',
         context_instance=RequestContext(request)
     )
 
@@ -114,7 +113,7 @@ def update_key(request, key, value=None):
     except etcd.EtcdException:
         print("etcd key update error.")
     return render_to_response(
-        'updatekey.html',
+        'update_key.html',
         context_instance=RequestContext(request)
     )
 
