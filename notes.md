@@ -25,18 +25,20 @@
 3. Etcd cluster client connect formate:
 
     * m1 ---> http://192.168.56.2:2379
-	* m2 ---> http://192.168.56.2:2379,http://192.168.56.3:2379,http://192.168.56.4:2379
+
+    * m2 ---> http://192.168.56.2:2379,http://192.168.56.3:2379,http://192.168.56.4:2379
 
 4. etcdadmin todo
 	
-	* etcd cluster sn
-	* request with etcd cluster sn
+    * etcd cluster sn
+
+    * request with etcd cluster sn
 
 5. Others
 	
-	* etcd TCP ports
+    * etcd TCP ports
 
     * The [official etcd ports](https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml?search=etcd) are 2379 for client requests, and 2380 for peer communication.
 
-	
+    * https://github.com/yun-an/deis/blob/de27c11475bb7ca24816f288aa115699a1c37e26/controller/api/utils.py
 	

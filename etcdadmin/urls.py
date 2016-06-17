@@ -23,13 +23,13 @@ urlpatterns = [
     url(r'^$', action_views.home, name='home'),
 
     # etcd clusters
-    url(r'^cluster/add/$', action_views.add_etcd_cluster, name='addetcdcluster'),
+    url(r'^cluster/add/$', action_views.add_ec, name='addetcdcluster'),
 
     # etcd cluster dirs
-    url(r'^ec-(\d{4})/keys/$', action_views.get_dir, name='getdir'),
-    url(r'^ec-(\d{4})/keys/set/$', action_views.set_key, name='setkey'),
-    url(r'^ec-(?P<ecsn>\d{4})/keys/update$', action_views.update_key, name='updatekey'),
-    url(r'^ec-(?P<ecsn>\d{4})/keys/del$', action_views.delete_key, name='delkey'),
+    url(r'^ec-(?P<ecsn>\d{4})/keys/$', action_views.get_dir, name='getdir'),
+    url(r'^ec-(?P<ecsn>\d{4})/keys/set/$', action_views.set_key, name='setkey'),
+    url(r'^ec-(?P<ecsn>\d{4})/keys/update/$', action_views.update_key, name='updatekey'),
+    url(r'^ec-(?P<ecsn>\d{4})/keys/del/$', action_views.delete_key, name='delkey'),
     
     # etcd cluster state
     url(r'^status/ec-(\d{4})', action_views.ec_status, name='etcdcluster_status'),

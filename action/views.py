@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response, render
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from etcdadmin.settings import ETCDCLUSTER_PREFIX, ETCDCLUSTER_STATE
 from .models import EtcdCluster
 from .forms import EtcdClusterForm
@@ -13,10 +14,17 @@ from utils.parse_tools import parseURL
 import etcd
 import json
 import requests
+import logging
 
-#from operator import itemgetter
 
-#eClient = etcd.Client(host="192.168.56.2", port=4001, protocol="http", allow_reconnect=True)
+logger = logging.getLogger(__name__)
+
+
+def log_event(app, msg, level=logging.INFO):
+    # controller needs to know which app this log comes from
+    logger.log(level, "{}: {}".format(app.id, msg))
+    app.log(msg, level)
+    
 
 def home(request):
 
@@ -51,7 +59,7 @@ def ec_status(request, ecsn=None):
         
     return render(request, 'ec_status.html', locals())
 
-def add_etcd_cluster(request):
+def add_ec(request):
 
     form = EtcdClusterForm()
     if request.method == "POST":
@@ -75,20 +83,30 @@ def add_etcd_cluster(request):
 def get_dir(request, ecsn=None):
 
     dirs = None
+    
     try:
         ec = EtcdCluster.objects.get(serial_number=ecsn)
         ec_endpoint = parseURL(ec.cluster_endpoint)
         eClient = etcd.Client(host=ec_endpoint['host'], port=ec_endpoint['port'], protocol=ec_endpoint['scheme'], allow_reconnect=True)
         dirs = eClient.read(str(ETCDCLUSTER_PREFIX), recursive=True, sorted=True)
-#           for child in r.children:
-#           print(child.key, child.value)
+#         print(objs)
+#         paginator = Paginator(objs.children, 25) # Show 25 contacts per page
+#         
+#         page = request.GET.get('page')
+#         try:
+#             dirs = paginator.page(page)
+#         except PageNotAnInteger:
+#             dirs = paginator.page(1)
+#         except EmptyPage:
+#             dirs = paginator.page(paginator.num_pages)
+        
     except EtcdCluster.DoesNotExist:
         print("etcd cluster is not found.")
 
     return render(request, 'get_dir.html', locals())
 
 
-def set_key(request, key=None, value=None):
+def set_key(request, ecsn=None):
 
     # try:
     #     eClient.write(str(key), str(value))
@@ -126,11 +144,13 @@ def update_key(request, ecsn=None):
 def delete_key(request, ecsn=None):
 
     try:
-        ec = EtcdCluster.objects.get(cluster_endpoint=ecsn)
+        print("ec sn is: %s " % ecsn)
+        ec = EtcdCluster.objects.get(serial_number=ecsn)
         ec_endpoint = parseURL(ec.cluster_endpoint)
         eClient = etcd.Client(host=ec_endpoint['host'], port=ec_endpoint['port'], protocol=ec_endpoint['scheme'], allow_reconnect=True)
-        key = request.GET.get('key')
+        
         try:
+            key = request.GET.get('key')
             eClient.delete(key, dir=True)
             print("dir(%s) has deleted" % key)
             messages.add_message(request, messages.INFO, ("dir(%s) has deleted" % key))
@@ -142,6 +162,6 @@ def delete_key(request, ecsn=None):
                 print("dir(%s) not found" % key)
 
     except EtcdCluster.DoesNotExist:
-        print("etcd cluster is not found.")
+        print("etcd cluster is not online.")
 
-    return HttpResponseRedirect(reverse('action:getdir'))
+    return HttpResponseRedirect(reverse('getdir', kwargs={'ecsn': ecsn}))

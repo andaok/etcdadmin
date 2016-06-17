@@ -40,5 +40,22 @@
         {% endfor %}
       </tbody>
     </table>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if contacts.has_previous %}
+                <a href="?page={{ contacts.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ contacts.number }} of {{ contacts.paginator.num_pages }}.
+            </span>
+
+            {% if contacts.has_next %}
+                <a href="?page={{ contacts.next_page_number }}">next</a>
+            {% endif %}
+        </span>
+    </div>
+
 </div>
 {% endblock %}
