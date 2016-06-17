@@ -24,6 +24,7 @@ urlpatterns = [
 
     # etcd clusters
     url(r'^cluster/add/$', action_views.add_ec, name='addetcdcluster'),
+    url(r'^cluster/del/$', action_views.del_ec, name='deletcdcluster'),
 
     # etcd cluster dirs
     url(r'^ec-(?P<ecsn>\d{4})/keys/$', action_views.get_dir, name='getdir'),

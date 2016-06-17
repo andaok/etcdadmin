@@ -80,6 +80,18 @@ def add_ec(request):
 
     return render(request, 'add_ec.html', locals())
 
+
+def del_ec(request):
+    
+    try:
+        ecsn = request.GET.get('ecsn')
+        EtcdCluster.objects.filter(serial_number=ecsn).delete()
+    except EtcdCluster.DoesNotExist:
+        print("etcd cluster is not found.")
+    
+    return HttpResponseRedirect(reverse('home'))
+
+
 def get_dir(request, ecsn=None):
 
     dirs = None
