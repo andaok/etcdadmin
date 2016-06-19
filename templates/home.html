@@ -23,6 +23,7 @@
                 <th>Name</th>
                 <th>Endpoints</th>
                 <th>Authentication</th>
+                <th>Version</th>
                 <th>Status</th>
                 <th>CreateBy</th>
                 <th>ModifiedBy</th>
@@ -34,8 +35,17 @@
         <tr>
           <td>{{ forloop.counter }}</td>
           <td>{{ ec.name }}</td>
-          <td><a href="/ec-{{ ec.serial_number }}/keys/">{{ ec.cluster_endpoint }}?tls=flase</a></td>
+          {% ifequal ec.status '1' %}
+          <td><a href="/ec-{{ ec.serial_number }}/keys/" title="{{ ec.cluster_endpoint }}">{{ ec.cluster_endpoint|safe|truncatewords:5 }}</a></td>
+          {% else %}
+          <td>{{ ec.cluster_endpoint|safe|truncatewords:5 }}</td>
+          {% endifequal %}
           <td>False</td>
+          {% if ec.version %}
+          <td>{{ ec.version }}</td>
+          {% else %}
+          <td>UNKOWN</td>
+          {% endif %}
           <td>
           {% ifequal ec.status '0' %}
             DOWN
@@ -46,12 +56,15 @@
           {% ifequal ec.status '2' %}
           	READY
           {% endifequal %}
+          {% ifequal ec.status '3' %}
+          	UNKOWN
+          {% endifequal %}
           </td>
           <td>{{ ec.created_at|date:'Y-m-d H:i' }}</td>
           <td>{{ ec.updated_at|date:'Y-m-d H:i' }}</td>
           <td>
               <a href="/cluster/update?ecsn={{ ec.serial_number }}"><i class="options icon"></i></a>
-          	  <a href="/cluster/test?ecsn={{ ec.serial_number }}"><i class="bug icon"></i></a>
+          	  <a href="/cluster/check?ecsn={{ ec.serial_number }}"><i class="bug icon"></i></a>
           	  <a href="/cluster/del?ecsn={{ ec.serial_number }}"><i class="remove icon"></i></a>
           </td>
         </tr>

@@ -1,13 +1,11 @@
 #-*- coding: utf-8 -*-
 
-
 from django.db import models
 from django.utils.translation import ugettext as _
 from datetime import datetime
 
 
-STATUS = (('0', 'READY'), ('1', 'UP'),('2', 'DOWN'))
-
+STATUS = (('0', 'READY'), ('1', 'UP'),('2', 'DOWN'),('3', 'UNKOWN'))
 
 class EtcdCluster(models.Model):
     name = models.CharField(max_length=50)
@@ -15,6 +13,7 @@ class EtcdCluster(models.Model):
     cluster_endpoint = models.CharField(max_length=300)
     cluster_prefix = models.CharField(max_length=100)
     status = models.CharField(max_length=1, choices=STATUS, default=0)
+    version = models.CharField(max_length=50, default="UNKOWN")
     created_at = models.DateTimeField(default=datetime.now)
     updated_at = models.DateTimeField(auto_now=True)
 
