@@ -20,7 +20,7 @@
         <thead>
             <tr>
                 <th>Num</th>
-                <th>Protocal</th>
+                <th>Name</th>
                 <th>Endpoints</th>
                 <th>Authentication</th>
                 <th>Status</th>
@@ -33,7 +33,7 @@
         {% for ec in ecs %}
         <tr>
           <td>{{ forloop.counter }}</td>
-          <td>{{ ec.get_protocol_display }}</td>
+          <td>{{ ec.name }}</td>
           <td><a href="/ec-{{ ec.serial_number }}/keys/">{{ ec.cluster_endpoint }}?tls=flase</a></td>
           <td>False</td>
           <td>

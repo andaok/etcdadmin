@@ -1,0 +1,43 @@
+
+http://192.168.0.60:2379/version
+http://192.168.0.60:2379/v2/keys
+http://192.168.0.60:2379/v2/stats/leader
+http://192.168.0.60:2379/v2/stats/self
+
+curl -L http://127.0.0.1:4001/v2/keys/message -XPUT -d value="Hello etcd"
+curl -L http://127.0.0.1:4001/v2/keys/message -XDELETE
+curl -L http://127.0.0.1:4001/v2/keys/foo -XPUT -d value=bar -d ttl=5
+
+curl -L 'http://127.0.0.1:4001/v2/keys/foo?wait=true&waitIndex=7'
+curl -s 'http://127.0.0.1:4001/v2/keys/queue?recursive=true&sorted=true'
+curl -L http://127.0.0.1:4001/v2/keys/dir -XPUT -d ttl=30 -d dir=true'
+
+curl -L http://127.0.0.1:4001/v2/keys/foo?prevValue=two -XDELETE 
+
+curl -L http://127.0.0.1:4001/v2/keys/dir -XPUT -d dir=true
+curl -L 'http://127.0.0.1:4001/v2/keys/foo_dir?dir=true' -XDELETE
+
+
+curl -L http://127.0.0.1:7001/v2/admin/config -XPUT -d '{"activeSize":3, "removeDelay":1800,"syncInterval":5}'
+
+curl -L http://127.0.0.1:7001/v2/admin/config
+curl -L http://127.0.0.1:7001/v2/admin/machines
+---------------------------
+v3:
+etcdctl --endpoints=$ENDPOINTS put web1 value1
+etcdctl --endpoints=$ENDPOINTS put web2 value2
+etcdctl --endpoints=$ENDPOINTS put web3 value3
+
+etcdctl --endpoints=$ENDPOINTS get web --prefix
+
+
+etcdctl --endpoints=$ENDPOINTS put key myvalue
+etcdctl --endpoints=$ENDPOINTS del key
+
+etcdctl --endpoints=$ENDPOINTS put k1 value1
+etcdctl --endpoints=$ENDPOINTS put k2 value2
+etcdctl --endpoints=$ENDPOINTS del k --prefix
+
+
+etcdctl --write-out=table --endpoints=$ENDPOINTS endpoint status
+etcdctl --endpoints=$ENDPOINTS endpoint health
