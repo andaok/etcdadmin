@@ -20,7 +20,7 @@ class EtcdCluster(models.Model):
     class Meta:
         db_table = 'etcdcluster'
         verbose_name = _(u'etcdcluster')
-        unique_together = ("name", "cluster_endpoint")
+        unique_together = ("cluster_endpoint",)
 
     def __unicode__(self):
         return "%s - %s  %s / %s" % (self.name, self.cluster_address, self.status, self.created_at)

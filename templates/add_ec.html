@@ -15,18 +15,19 @@
 <div class="add-etcd-cluster">
 	<form class="ui form" action="" method="POST">
 		{% csrf_token %}
-	  	<div class="required eight wide field">
-	      	<label>Cluster Name</label>
-	      	<input type="text" placeholder="EC_N001" name="ec_name">
-	  	</div>
-	  	<div class="required eight wide field">
-	     	<label>Cluster Prefix</label>
-	      	<input type="text" placeholder="default is /" name="ec_prefix">
-	  	</div>
-	  	<div class="required field">
-	      	<label>Endpoint URL</label>
-	      	<input type="text" name="last-name" placeholder="http://192.168.56.2:2379 or https://192.168.56.2:2379" name="ec_endpoint">
-	  	</div>
+        <!-- <div class="required eight wide field">
+            <label>Cluster Name</label>
+            <input type="text" placeholder="EC_N001" name="name">
+        </div>
+        <div class="required eight wide field">
+            <label>Cluster Prefix</label>
+            <input type="text" placeholder="default is /" name="cluster_prefix">
+        </div>
+        <div class="required field">
+            <label>Endpoint URL</label>
+            <input type="text" name="last-name" placeholder="http://192.168.56.2:2379 or https://192.168.56.2:2379" name="cluster_endpoint">
+        </div> -->
+	  	{{form.as_p }}
 	   	<button class="ui button" type="submit">Submit</button>
 	</form>
 </div>
@@ -35,7 +36,6 @@
 {% block extra-js %}
 <script type="text/javascript">
 $('.ui.radio.checkbox')
-  .checkbox()
+  .checkbox();
 </script>
 {% endblock %}
-;

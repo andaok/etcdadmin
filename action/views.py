@@ -66,10 +66,10 @@ def add_ec(request):
         form = EtcdClusterForm(request.POST)
         if form.is_valid():
             ec = form.save(commit=False)
-            print(request.POST['ec_name'])
-            ec.name = request.POST['ec_name']
-            ec.prefix = request.POST['ec_prefix']
-            ec.endpoint = request.POST['ec_endpoint']
+            print(request.POST['name'])
+            ec.name = request.POST['name']
+            ec.prefix = request.POST['cluster_prefix']
+            ec.endpoint = request.POST['cluster_endpoint']
             print(ec)
             parseURL(ec.endpoint)
             ec.save()
