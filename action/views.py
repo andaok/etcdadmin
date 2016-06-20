@@ -70,10 +70,8 @@ def add_ec(request):
             ec.name = request.POST['name']
             ec.prefix = request.POST['cluster_prefix']
             ec.endpoint = request.POST['cluster_endpoint']
-            print(ec)
-            parseURL(ec.endpoint)
             ec.save()
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect(reverse('home'))
     else:
         print("something is wrong.")
         form = EtcdClusterForm()

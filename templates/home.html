@@ -48,13 +48,13 @@
           {% endif %}
           <td>
           {% ifequal ec.status '0' %}
-            DOWN
+            READY
           {% endifequal %}
           {% ifequal ec.status '1' %}
           	<a href="/status/ec-{{ ec.serial_number }}">{{ ec.get_status_display }}</a>
           {% endifequal %}
           {% ifequal ec.status '2' %}
-          	READY
+          	DOWN
           {% endifequal %}
           {% ifequal ec.status '3' %}
           	UNKOWN

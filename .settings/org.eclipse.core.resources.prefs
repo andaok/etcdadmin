@@ -1,0 +1,10 @@
+eclipse.preferences.version=1
+encoding//action/models.py=utf-8
+encoding//action/templatetags/get_extras.py=utf-8
+encoding//action/views.py=utf-8
+encoding//utils/__init__.py=utf-8
+encoding//utils/check_etcd.py=utf-8
+encoding//utils/etcd_connect.py=utf-8
+encoding//utils/operations.py=utf-8
+encoding//utils/parse_tools.py=utf-8
+encoding/<project>=UTF-8
