@@ -23,7 +23,7 @@
                 <th>Name</th>
                 <th>Endpoints</th>
                 <th>Authentication</th>
-                <th>Version</th>
+                <th>VersionPrefix</th>
                 <th>Status</th>
                 <th>CreateBy</th>
                 <th>ModifiedBy</th>
@@ -41,11 +41,7 @@
           <td>{{ ec.cluster_endpoint|safe|truncatewords:5 }}</td>
           {% endifequal %}
           <td>False</td>
-          {% if ec.version %}
-          <td>{{ ec.version }}</td>
-          {% else %}
-          <td>UNKOWN</td>
-          {% endif %}
+          <td>{{ ec.version_prefix }}</td>
           <td>
           {% ifequal ec.status '0' %}
             READY

@@ -24,9 +24,9 @@ urlpatterns = [
 
     # etcd clusters
     url(r'^cluster/add/$', action_views.add_ec, name='addetcdcluster'),
-    #url(r'^cluster/check/$', action_views.check_ec, name='checketcdcluster'),
+    url(r'^cluster/check/$', action_views.check_ec, name='checketcdcluster'),
     #url(r'^cluster/update/$', action_views.update_ec, name='updateetcdcluster'),
-    url(r'^cluster/del/$', action_views.del_ec, name='deletcdcluster'),
+    url(r'^cluster/del/$', action_views.delete_ec, name='deletcdcluster'),
     url(r'^status/ec-(?P<ecsn>[0-9a-z-]+)', action_views.ec_status, name='etcdcluster_status'),
     
     # etcd cluster dirs

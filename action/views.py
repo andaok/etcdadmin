@@ -6,7 +6,7 @@ from django.shortcuts import render_to_response, render
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from etcdadmin.settings import ETCDCLUSTER_PREFIX, ETCDCLUSTER_STATE
+from etcdadmin.settings import ETCDCLUSTER_PREFIX, ETCDCLUSTER_STATE, ETCDCLUSTER_HEALTH, ETCDCLUSTER_VERSION
 from .models import EtcdCluster
 from .forms import EtcdClusterForm
 from utils.parse_tools import parseURL
@@ -80,7 +80,7 @@ def add_ec(request):
     return render(request, 'add_ec.html', locals())
 
 
-def del_ec(request):
+def delete_ec(request):
     
     try:
         ecsn = request.GET.get('ecsn')
@@ -88,6 +88,35 @@ def del_ec(request):
     except EtcdCluster.DoesNotExist:
         print("etcd cluster is not found.")
     
+    return HttpResponseRedirect(reverse('home'))
+
+
+def check_ec(request):
+    
+    try:
+        ecsn = request.GET.get('ecsn')
+        ec = EtcdCluster.objects.get(serial_number=ecsn)
+        API_URL = ec.cluster_endpoint + ETCDCLUSTER_HEALTH
+        API_URL2 = ec.cluster_endpoint + ETCDCLUSTER_HEALTH
+        try:
+            req = requests.get(API_URL, verify=False, allow_redirects=True, timeout=5)
+            content = json.loads(req.content.decode('utf8'))
+            print(content['health'])
+            
+            if content['health'] == "true":
+                EtcdCluster.objects.filter(serial_number=ecsn).update(status=1)
+            else:
+                print("error.....")
+        except requests.exceptions.ConnectionError as e:
+            print(ecsn)
+            EtcdCluster.objects.filter(serial_number=ecsn).update(status=2)
+            print("ERROR: %s" % e)
+            return HttpResponseRedirect(reverse('home'))
+            
+    except EtcdCluster.DoesNotExist:
+        print("etcd cluster is not found.")
+    
+    #return render(request, 'check_ec.html', locals())
     return HttpResponseRedirect(reverse('home'))
 
 

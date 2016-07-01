@@ -13,7 +13,7 @@ class EtcdCluster(models.Model):
     cluster_endpoint = models.CharField(max_length=300)
     cluster_prefix = models.CharField(max_length=100)
     status = models.CharField(max_length=1, choices=STATUS, default=0)
-    version = models.CharField(max_length=50, default="UNKOWN")
+    version_prefix = models.CharField(max_length=50, default="UNKOWN")
     created_at = models.DateTimeField(default=datetime.now)
     updated_at = models.DateTimeField(auto_now=True)
 

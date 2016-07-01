@@ -3,6 +3,7 @@ http://192.168.0.60:2379/version
 http://192.168.0.60:2379/v2/keys
 http://192.168.0.60:2379/v2/stats/leader
 http://192.168.0.60:2379/v2/stats/self
+http://192.168.0.60:2379/health
 
 curl -L http://127.0.0.1:4001/v2/keys/message -XPUT -d value="Hello etcd"
 curl -L http://127.0.0.1:4001/v2/keys/message -XDELETE
