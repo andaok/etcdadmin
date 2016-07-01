@@ -1,7 +1,11 @@
-.settings/*
+.settings/
 .project
 .pydevproject
-*.pyc
 db.sqlite3
-*/__pycache__/*
-*/migrations/*
+*/migrations/
+*.py[cod]
+*.so
+*.egg
+*.egg-info
+dist/
+build/

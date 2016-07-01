@@ -27,13 +27,13 @@ urlpatterns = [
     #url(r'^cluster/check/$', action_views.check_ec, name='checketcdcluster'),
     #url(r'^cluster/update/$', action_views.update_ec, name='updateetcdcluster'),
     url(r'^cluster/del/$', action_views.del_ec, name='deletcdcluster'),
-    url(r'^status/ec-(\d{4})', action_views.ec_status, name='etcdcluster_status'),
+    url(r'^status/ec-(?P<ecsn>[0-9a-z-]+)', action_views.ec_status, name='etcdcluster_status'),
     
     # etcd cluster dirs
-    url(r'^ec-(?P<ecsn>\d{4})/keys/$', action_views.get_dir, name='getdir'),
-    url(r'^ec-(?P<ecsn>\d{4})/keys/set/$', action_views.set_key, name='setkey'),
-    url(r'^ec-(?P<ecsn>\d{4})/keys/update/$', action_views.update_key, name='updatekey'),
-    url(r'^ec-(?P<ecsn>\d{4})/keys/del/$', action_views.delete_key, name='delkey'),
+    url(r'^ec-(?P<ecsn>[0-9a-z-]+)/keys/$', action_views.get_dir, name='getdir'),
+    url(r'^ec-(?P<ecsn>[0-9a-z-]+)/keys/set/$', action_views.set_key, name='setkey'),
+    url(r'^ec-(?P<ecsn>[0-9a-z-]+)/keys/update/$', action_views.update_key, name='updatekey'),
+    url(r'^ec-(?P<ecsn>[0-9a-z-]+)/keys/del/$', action_views.delete_key, name='delkey'),
     
     # etcd cluster reset api
     #url(r'^api/', 'action.views.api.*', name='api'),

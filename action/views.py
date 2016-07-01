@@ -15,7 +15,7 @@ import etcd
 import json
 import requests
 import logging
-
+import uuid
 
 logger = logging.getLogger(__name__)
 
@@ -70,6 +70,7 @@ def add_ec(request):
             ec.name = request.POST['name']
             ec.prefix = request.POST['cluster_prefix']
             ec.endpoint = request.POST['cluster_endpoint']
+            ec.serial_number = uuid.uuid4()
             ec.save()
             return HttpResponseRedirect(reverse('home'))
     else:

@@ -8,8 +8,8 @@ from datetime import datetime
 STATUS = (('0', 'READY'), ('1', 'UP'),('2', 'DOWN'),('3', 'UNKOWN'))
 
 class EtcdCluster(models.Model):
-    name = models.CharField(max_length=50)
-    serial_number = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=50, unique=True)
+    serial_number = models.CharField(max_length=100)
     cluster_endpoint = models.CharField(max_length=300)
     cluster_prefix = models.CharField(max_length=100)
     status = models.CharField(max_length=1, choices=STATUS, default=0)
@@ -26,9 +26,9 @@ class EtcdCluster(models.Model):
         return "%s - %s  %s / %s" % (self.name, self.cluster_address, self.status, self.created_at)
 
 #     @staticmethod
-#     def get_serial_number(eid):
-#         ecid = EtcdCluster.objects.get(id=eid).id
-#         serial_number = ecid.rjust(4, '0')
+#     def get_serial_number(self):
+#         print(self.id)
+#         serial_number = self.id.rjust(4, '0')
 #         return serial_number
     
     def save(self):

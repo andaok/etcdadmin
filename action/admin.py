@@ -24,6 +24,7 @@ class EtcdClusterAdmin(admin.ModelAdmin):
                 'serial_number',
                 'cluster_endpoint',
                 'version',
+                'status',
             ),
         }),
     )
