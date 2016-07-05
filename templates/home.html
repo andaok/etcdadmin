@@ -4,17 +4,15 @@
 
 
 <div class="nav-guide">
-    <div class="container">
-        <div class="ui breadcrumb">
-            <a class="section">Etcd Cluster List</a>
-            <i class="right angle icon divider"></i>
-            <a class="section"><a href="/cluster/add/" title="add a new etcd cluster"><i class="plus icon"></i></a></a>
-        </div>
+    <div class="ui breadcrumb">
+        <a class="section">Etcd Cluster List</a>
+        <i class="right angle icon divider"></i>
+        <a class="section"><a href="/cluster/add/" title="add a new etcd cluster"><i class="plus icon"></i></a></a>
     </div>
 </div>
 <div class="etcd-cluster-list">
     {% ifequal ecs.count 0 %}
-    <center class="etcd-cluster-count-nop"><h2>First step, you must <a href="#">add a etcd cluster.</a></h2></center>
+ 		pp
     {% else %}
     <table class="ui very compact table">
         <thead>
