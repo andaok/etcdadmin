@@ -16,6 +16,8 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from action import views as action_views
+from api import views as api_views
+
 
 urlpatterns = [
     # operator
@@ -37,4 +39,7 @@ urlpatterns = [
     
     # etcd cluster reset api
     #url(r'^api/', 'action.views.api.*', name='api'),
+    
+    # etcdadmin reset api
+    url(r'^healthcheck$', api_views.healthcheck, name='healthcheck'),
 ]
