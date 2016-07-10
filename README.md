@@ -12,7 +12,7 @@ Include:
 [x] reset api
 
 ## Supported etcd version
-* etcd >= 2.0
+* etcd >= 2.0, 3.0
 
 ## Installation
 **Prerequisites**
