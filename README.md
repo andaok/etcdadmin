@@ -2,6 +2,7 @@
 
 ## Overview
 A tool for managing Etcd Cluster. 
+![etcdadmin Logo](logos/etcdadmin.png)
 
 Include:
 
