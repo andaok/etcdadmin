@@ -1,19 +1,19 @@
 {% extends 'base.html' %}
 
-{% block content %}
-
-
+{% block ec-guide %} 
 <div class="nav-guide">
-    <div class="container">
-        <div class="ui breadcrumb">
-            <a class="section" href="/">Etcd Cluster List</a>
-            <i class="right angle icon divider"></i>
-            <div class="active section"><a href="/ec-0001/keys/">EC-0001@192.168.56.2:4001</a></div>
-            <i class="right angle icon divider"></i>
-            <div class="active section">Add a New Node</div>
-        </div>
+    <div class="ui breadcrumb">
+        <a class="section" href="/">Etcd Cluster List</a>
+        <i class="right angle icon divider"></i>
+        <div class="active section"><a href="/ec-0001/keys/">EC-0001@192.168.56.2:4001</a></div>
+        <i class="right angle icon divider"></i>
+        <div class="active section">Add a New Node</div>
     </div>
 </div>
+{% endblock %}
+
+{% block content %}
+
 <div class="add-new-node">
   <form class="ui form" action="" method="POST">
     {% csrf_token %}

@@ -3,9 +3,8 @@
     src: url(../font/MrsSheppards-Regular.ttf);
 }
 .container {
-    width: 1024px;
     border-top: 0px;
-    margin: 0px auto;
+    margin: 0px 10%;
 /*    border-left: 1px solid #eee;
     border-right: 1px solid #eee;*/
 }

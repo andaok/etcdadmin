@@ -1,8 +1,6 @@
 {% extends 'base.html' %}
 
-{% block content %}
-
-
+{% block ec-guide %}
 <div class="nav-guide">
     <div class="ui breadcrumb">
         <a class="section">Etcd Cluster List</a>
@@ -10,6 +8,9 @@
         <a class="section"><a href="/cluster/add/" title="add a new etcd cluster"><i class="plus icon"></i></a></a>
     </div>
 </div>
+{% endblock %}
+
+{% block content %}
 <div class="etcd-cluster-list">
     {% ifequal ecs.count 0 %}
  		pp
