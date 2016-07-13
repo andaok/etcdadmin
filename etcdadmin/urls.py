@@ -27,7 +27,7 @@ urlpatterns = [
     url(r'^$', account_views.home, name='home'),
     url(r'^accounts/login/$', auth_views.login),
     #url(r'^accounts/login/$', account_views.login),
-    url(r'^accounts/logout/$', 'django.contrib.auth.views.logout',{'next_page': '/accounts/login'}),
+    url(r'^accounts/logout/$', auth_views.logout,{'next_page': '/accounts/login'}),
 
     # etcd clusters
     url(r'^ecs$', action_views.ecs_list, name='ecs_list'),
