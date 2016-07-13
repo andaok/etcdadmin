@@ -8,4 +8,8 @@ class EtcdClusterForm(forms.ModelForm):
         
         
 class KeyForm(forms.Form):
-    value = forms.CharField(label='Your name')
+    key_path = forms.CharField(label='Key path')
+    value = forms.CharField(label='Value to set', required=False)
+    ttl =  forms.IntegerField(min_value=0)
+    is_dir = forms.BooleanField(required=False ,label='Is a directory')
+    append = forms.BooleanField(required=False)

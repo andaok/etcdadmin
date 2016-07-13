@@ -5,9 +5,9 @@
     <div class="ui breadcrumb">
         <a class="section" href="{% url 'ecs_list' %}">Etcd Cluster List</a>
         <i class="right angle icon divider"></i>
-        <div class="active section"><a href="/ec-{{ ec.serial_number }}/keys/">EC-0001@192.168.56.2:4001</a></div>
+        <div class="active section"><a href="/ec-{{ ec.serial_number }}/keys/">{{ ec.name }}</a></div>
         <i class="right angle icon divider"></i>
-        <div class="active section">Add a New Node</div>
+        <div class="active section">Add a new key</div>
     </div>
 </div>
 {% endblock %}

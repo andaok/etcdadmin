@@ -183,14 +183,15 @@ def get_dir(request, ecsn=None):
 @login_required
 def set_key(request, ecsn=None):
 
+    ec = get_object_or_404(EtcdCluster, serial_number=ecsn)
     # try:
     #     eClient.write(str(key), str(value))
     # except etcd.EtcdKeyNotFound:
     #     print("key or value could not be none.")
 
-    return render_to_response(
+    return render(request,
         'set_key.html',
-        context_instance=RequestContext(request)
+        locals()
     )
 
 
