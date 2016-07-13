@@ -1,9 +1,9 @@
-
+{% load static %}
 <!DOCTYPE html>
 <html >
   <head>
     <meta charset="UTF-8">
-    <title>Flat Login Form</title>
+    <title>etcdAdmin Login</title>
     
     
     <link rel="stylesheet" href="{% static "assets/css/login/reset.css" %}">
@@ -24,21 +24,22 @@
     
 <div class="container">
   <div class="info">
-    <h1>Flat Login Form</h1><span>Made with <i class="fa fa-heart"></i> by <a href="http://andytran.me">Andy Tran</a></span>
+    <h1>etcdAdmin Login</h1><span>Made with <i class="fa fa-heart"></i> by <a href="http://andytran.me">Andy Tran</a></span>
   </div>
 </div>
+
 <div class="form">
   <form class="register-form">
     <input type="text" placeholder="name"/>
     <input type="password" placeholder="password"/>
     <input type="text" placeholder="email address"/>
-    <button>create</button>
-    <p class="message">Already registered? <a href="#">Sign In</a></p>
+    <button>Create an account</button>
+    <p class="message">Already registered? <a href="#">Sign up for etcdAdmin</a></p>
   </form>
   <form class="login-form">
     <input type="text" placeholder="username"/>
     <input type="password" placeholder="password"/>
-    <button>login</button>
+    <button>Sign in</button>
     <p class="message">Not registered? <a href="#">Create an account</a></p>
   </form>
 </div>

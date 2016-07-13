@@ -4,9 +4,9 @@
 {% block ec-guide %}
 <div class="nav-guide">
     <div class="ui breadcrumb">
-        <a class="section"><a href="/">Etcd Cluster List</a></a>
+        <a class="section"><a href="{% url 'ecs_list' %}">Etcd Cluster List</a></a>
         <i class="right angle icon divider"></i>
-        <div class="active section">EC-0001@192.168.56.2:4001</div>
+        <div class="active section">{{ ec.name }}</div>
         <i class="right angle icon divider"></i>
         <div class="active section">status</div>
     </div>

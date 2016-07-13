@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # myapps
+    'account',
     'action',
 ]
 
@@ -140,7 +141,7 @@ MESSAGE_TAGS = {
 # EtcdCluster
 ETCDCLUSTER_PREFIX = '/'
 ETCDCLUSTER_HEALTH = '/health'
-ETCDCLUSTER_VERSION = '/version'
+ETCDCLUSTER_VERSION_PREFIX = '/version'
 ETCDCLUSTER_STATE = '/v2/stats/store'
 
 # Etcdadmin

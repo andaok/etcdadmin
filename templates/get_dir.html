@@ -5,11 +5,11 @@
 {% block ec-guide %}
 <div class="nav-guide">
     <div class="ui breadcrumb">
-        <a class="section"><a href="/">Etcd Cluster List</a></a>
+        <a class="section"><a href="{% url 'ecs_list' %}">Etcd Cluster List</a></a>
         <i class="right angle icon divider"></i>
         <div class="active section">{{ ec.name }}</div>
         <i class="right angle icon divider"></i>
-        <a class="section"><a href="/ec-0001/keys/set/" title="add a new key or dir"><i class="plus icon"></i></a></a>
+        <a class="section"><a href="/ec-{{ ec.serial_number }}/keys/set/" title="add a new key or dir"><i class="plus icon"></i></a></a>
     </div>
 </div>
 {% endblock %}

@@ -1,71 +1,24 @@
-{% extends 'base.html' %}
-
-{% block ec-guide %}
-<div class="nav-guide">
-    <div class="ui breadcrumb">
-        <a class="section">Etcd Cluster List</a>
-        <i class="right angle icon divider"></i>
-        <a class="section"><a href="/cluster/add/" title="add a new etcd cluster"><i class="plus icon"></i></a></a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kubernetes In China.</title>
+    <style type="text/css">
+        .wrap {
+            width: 560px;
+            margin: 254px auto;
+        }
+        .helloworld p {
+            font: italic small-caps 13px/1.2em Arial;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="helloworld">
+            <p>hello world, we're coming soon...</p>
+        </div>
     </div>
-</div>
-{% endblock %}
+</body>
+</html>
 
-{% block content %}
-<div class="etcd-cluster-list">
-    {% ifequal ecs.count 0 %}
- 		pp
-    {% else %}
-    <table class="ui very compact table">
-        <thead>
-            <tr>
-                <th>Num</th>
-                <th>Name</th>
-                <th>Endpoints</th>
-                <th>Authentication</th>
-                <th>VersionPrefix</th>
-                <th>Status</th>
-                <th>CreateBy</th>
-                <th>ModifiedBy</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-      <tbody>
-        {% for ec in ecs %}
-        <tr>
-          <td>{{ forloop.counter }}</td>
-          <td>{{ ec.name }}</td>
-          {% ifequal ec.status '1' %}
-          <td><a href="/ec-{{ ec.serial_number }}/keys/" title="{{ ec.cluster_endpoint }}">{{ ec.cluster_endpoint|safe|truncatewords:5 }}</a></td>
-          {% else %}
-          <td>{{ ec.cluster_endpoint|safe|truncatewords:5 }}</td>
-          {% endifequal %}
-          <td>False</td>
-          <td>{{ ec.version_prefix }}</td>
-          <td>
-          {% ifequal ec.status '0' %}
-            READY
-          {% endifequal %}
-          {% ifequal ec.status '1' %}
-          	<a href="/status/ec-{{ ec.serial_number }}">{{ ec.get_status_display }}</a>
-          {% endifequal %}
-          {% ifequal ec.status '2' %}
-          	DOWN
-          {% endifequal %}
-          {% ifequal ec.status '3' %}
-          	UNKOWN
-          {% endifequal %}
-          </td>
-          <td>{{ ec.created_at|date:'Y-m-d H:i' }}</td>
-          <td>{{ ec.updated_at|date:'Y-m-d H:i' }}</td>
-          <td>
-              <a href="/cluster/update?ecsn={{ ec.serial_number }}"><i class="options icon"></i></a>
-          	  <a href="/cluster/check?ecsn={{ ec.serial_number }}"><i class="bug icon"></i></a>
-          	  <a href="/cluster/del?ecsn={{ ec.serial_number }}"><i class="remove icon"></i></a>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% endifequal %}
-</div>
-{% endblock %}
