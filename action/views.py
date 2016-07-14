@@ -4,11 +4,10 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.urlresolvers import reverse
-from django.shortcuts import render_to_response, render
 from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
 from django.template import RequestContext
 from etcdadmin.settings import (
-    ETCDCLUSTER_PREFIX, 
     ETCDCLUSTER_STATE, 
     ETCDCLUSTER_HEALTH, 
     ETCDCLUSTER_VERSION_PREFIX
@@ -40,12 +39,8 @@ def ecs_list(request):
     except EtcdCluster.DoesNotExist:
         ecs = None
 
-    return render_to_response(
-        'ecs_list.html', {
-            "ecs": ecs
-        },
-        context_instance=RequestContext(request)
-    )
+    return render(request, 'ecs_list.html', {"ecs": ecs}, locals())
+
 
 @login_required
 def ec_status(request, ecsn=None):
@@ -88,7 +83,6 @@ def add_ec(request):
 
     return render(request, 'add_ec.html', locals())
 
-from django.shortcuts import get_object_or_404
 
 @login_required
 def update_ec(request):
@@ -150,7 +144,6 @@ def check_ec(request):
     except EtcdCluster.DoesNotExist:
         print("etcd cluster is not found.")
     
-    #return render(request, 'check_ec.html', locals())
     return HttpResponseRedirect(reverse('ecs_list'))
 
 @login_required
@@ -161,7 +154,12 @@ def get_dir(request, ecsn=None):
     try:
         ec = EtcdCluster.objects.get(serial_number=ecsn)
         ec_endpoint = parseURL(ec.cluster_endpoint)
-        eClient = etcd.Client(host=ec_endpoint['host'], port=ec_endpoint['port'], protocol=ec_endpoint['scheme'], allow_reconnect=True)
+        eClient = etcd.Client(
+            host=ec_endpoint['host'], 
+            port=ec_endpoint['port'], 
+            protocol=ec_endpoint['scheme'], 
+            allow_reconnect=True
+        )
         dirs = eClient.read(str(ec.cluster_prefix), recursive=True, sorted=True)
 #         print(objs)
 #         paginator = Paginator(objs.children, 25) # Show 25 contacts per page
@@ -189,10 +187,7 @@ def set_key(request, ecsn=None):
     # except etcd.EtcdKeyNotFound:
     #     print("key or value could not be none.")
 
-    return render(request,
-        'set_key.html',
-        locals()
-    )
+    return render(request, 'set_key.html', locals())
 
 
 @login_required
@@ -203,7 +198,12 @@ def update_key(request, ecsn=None):
         ec = EtcdCluster.objects.get(serial_number=ecsn)
         ec_endpoint = parseURL(ec.cluster_endpoint)
         print(ec_endpoint)
-        eClient = etcd.Client(host=ec_endpoint['host'], port=ec_endpoint['port'], protocol=ec_endpoint['scheme'], allow_reconnect=True)
+        eClient = etcd.Client(
+            host=ec_endpoint['host'], 
+            port=ec_endpoint['port'], 
+            protocol=ec_endpoint['scheme'], 
+            allow_reconnect=True
+        )
         key = request.GET.get('key')
         value = request.GET.get('value')
         try:
@@ -214,10 +214,7 @@ def update_key(request, ecsn=None):
     except EtcdCluster.DoesNotExist:
         print("etcd cluster is not found.")
         
-    return render_to_response(
-        'update_key.html',
-        context_instance=RequestContext(request)
-    )
+    return render(request, 'update_key.html', locals())
 
 
 @login_required
@@ -227,7 +224,12 @@ def delete_key(request, ecsn=None):
         print("ec sn is: %s " % ecsn)
         ec = EtcdCluster.objects.get(serial_number=ecsn)
         ec_endpoint = parseURL(ec.cluster_endpoint)
-        eClient = etcd.Client(host=ec_endpoint['host'], port=ec_endpoint['port'], protocol=ec_endpoint['scheme'], allow_reconnect=True)
+        eClient = etcd.Client(
+            host=ec_endpoint['host'], 
+            port=ec_endpoint['port'], 
+            protocol=ec_endpoint['scheme'], 
+            allow_reconnect=True
+        )
         
         try:
             key = request.GET.get('key')

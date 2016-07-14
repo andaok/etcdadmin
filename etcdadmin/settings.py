@@ -139,7 +139,6 @@ MESSAGE_TAGS = {
 }
 
 # EtcdCluster
-ETCDCLUSTER_PREFIX = '/'
 ETCDCLUSTER_HEALTH = '/health'
 ETCDCLUSTER_VERSION_PREFIX = '/version'
 ETCDCLUSTER_STATE = '/v2/stats/store'
