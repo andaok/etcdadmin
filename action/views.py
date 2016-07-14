@@ -39,7 +39,7 @@ def ecs_list(request):
     except EtcdCluster.DoesNotExist:
         ecs = None
 
-    return render(request, 'ecs_list.html', {"ecs": ecs}, locals())
+    return render(request, 'ecs_list.html', {"ecs": ecs})
 
 
 @login_required
