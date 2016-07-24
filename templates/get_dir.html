@@ -32,34 +32,22 @@
         {% for dir in dirs.children %}
         <tr>
           <td>{{ forloop.counter }}</td>
-          <td>{{ dir.key }}</td>
+          {% if dir.value != None %}
+          <td><i class="file text outline icon"></i>{{ dir.key }}</td>
+          {% else %}
+          <td><i class="folder open outline icon"></i>{{ dir.key }}</td>
+          {% endif %}
           <td>{{ dir.value }}</td>
           <td>{{ dir.ttl|default_if_none:"Never Expire" }}</td>
           <td>
-          	<a href="/ec-{{ ec.serial_number }}/keys/update?key={{ dir.key }}"><i class="edit icon"></i></a>
-          	<a href="/ec-{{ ec.serial_number }}/keys/del?key={{ dir.key }}"><i class="remove icon"></i></a>
+          	<a href="/ec-{{ ec.serial_number }}/keys/update/?key={{ dir.key }}"><i class="edit icon"></i></a>
+          	<a href="/ec-{{ ec.serial_number }}/keys/lock/?key={{ dir.key }}"><i class="unlock alternate icon"></i></a>
+          	<a href="/ec-{{ ec.serial_number }}/keys/del/?key={{ dir.key }}"><i class="trash outline icon"></i></a>
           </td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
-
-    <div class="pagination">
-        <span class="step-links">
-            {% if contacts.has_previous %}
-                <a href="?page={{ contacts.previous_page_number }}">previous</a>
-            {% endif %}
-
-            <span class="current">
-                Page {{ contacts.number }} of {{ contacts.paginator.num_pages }}.
-            </span>
-
-            {% if contacts.has_next %}
-                <a href="?page={{ contacts.next_page_number }}">next</a>
-            {% endif %}
-        </span>
-    </div>
-
 </div>
 {% endblock %}
 

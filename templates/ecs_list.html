@@ -15,63 +15,90 @@
 {% endblock %}
 
 {% block content %}
+
+{% if messages %} 
+<div class="ui negative message">
+  <i class="close icon"></i>
+  {% for message in messages %}
+  <p>{{ message }}</p>
+  {% endfor %}
+</div>
+{% endif %}
+
 <div class="etcd-cluster-list">
 	<div class="se-pre-con"></div>
-    {% ifequal ecs.count 0 %}
- 		pp
+    {% ifequal ecs.paginator.count 0 %}
+ 		<div class="no-ecs"></div>
     {% else %}
-    <table class="ui very compact table">
-        <thead>
-            <tr>
-                <th>Num</th>
-                <th>Name</th>
-                <th>Endpoints</th>
-                <th>Authentication</th>
-                <th>ClusterPrefix</th>
-                <th>Status</th>
-                <th>CreateBy</th>
-                <th>ModifiedBy</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-      <tbody>
-        {% for ec in ecs %}
-        <tr>
-          <td>{{ forloop.counter }}</td>
-          <td>{{ ec.name }}</td>
-          {% ifequal ec.status '1' %}
-          <td><a href="/ec-{{ ec.serial_number }}/keys/" title="{{ ec.cluster_endpoint }}">{{ ec.cluster_endpoint|safe|truncatewords:5 }}</a></td>
-          {% else %}
-          <td>{{ ec.cluster_endpoint|safe|truncatewords:5 }}</td>
-          {% endifequal %}
-          <td>False</td>
-          <td>{{ ec.cluster_prefix }}</td>
-          <td>
-          {% ifequal ec.status '0' %}
-            READY
-          {% endifequal %}
-          {% ifequal ec.status '1' %}
-          	<a href="/status/ec-{{ ec.serial_number }}">{{ ec.get_status_display }}</a>
-          {% endifequal %}
-          {% ifequal ec.status '2' %}
-          	DOWN
-          {% endifequal %}
-          {% ifequal ec.status '3' %}
-          	UNKOWN
-          {% endifequal %}
-          </td>
-          <td>{{ ec.created_at|date:'Y-m-d H:i' }}</td>
-          <td>{{ ec.updated_at|date:'Y-m-d H:i' }}</td>
-          <td>
-              <a href="/ec/update?ecsn={{ ec.serial_number }}"><i class="options icon"></i></a>
-          	  <a href="/ec/check?ecsn={{ ec.serial_number }}"><i class="bug icon"></i></a>
-          	  <a href="/ec/del?ecsn={{ ec.serial_number }}"><i class="remove icon"></i></a>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% endifequal %}
+	<table class="ui very compact table">
+	    <thead>
+	        <tr>
+	            <th>Num</th>
+	            <th>Name</th>
+	            <th>Endpoints</th>
+	            <th>Authentication</th>
+	            <th>ClusterPrefix</th>
+	            <th>Status</th>
+	            <th>CreateBy</th>
+	            <th>ModifiedBy</th>
+	            <th>Action</th>
+	        </tr>
+	    </thead>
+	    <tbody>
+	        {% for ec in ecs %}
+	        <tr>
+	        <td>{{ forloop.counter }}</td>
+	        <td>{{ ec.name|truncatechars:20|safe }}</td>
+	        {% ifequal ec.status '1' %}
+	        <td><a href="/ec-{{ ec.serial_number }}/keys/" title="{{ ec.cluster_endpoint }}">{{ ec.cluster_endpoint|truncatechars:25|safe }}</a></td>
+	        {% else %}
+	        <td>{{ ec.cluster_endpoint|truncatechars:26|safe }}</td>
+	        {% endifequal %}
+	        <td>False</td>
+	        <td>{{ ec.cluster_prefix }}</td>
+	        <td>
+	            {% ifequal ec.status '0' %}
+	            READY
+	            {% endifequal %}
+	            {% ifequal ec.status '1' %}
+	            <a href="/status/ec-{{ ec.serial_number }}">{{ ec.get_status_display }}</a>
+	            {% endifequal %}
+	            {% ifequal ec.status '2' %}
+	            DOWN
+	            {% endifequal %}
+	            {% ifequal ec.status '3' %}
+	            UNKOWN
+	            {% endifequal %}
+	        </td>
+	        <td>{{ ec.created_at|date:'Y-m-d H:i' }}</td>
+	        <td>{{ ec.updated_at|date:'Y-m-d H:i' }}</td>
+	        <td>
+	            <a href="/ec/update?ecsn={{ ec.serial_number }}"><i class="options icon"></i></a>
+	            <a href="/ec/check?ecsn={{ ec.serial_number }}"><i class="bug icon"></i></a>
+	            <a href="/ec/del?ecsn={{ ec.serial_number }}"><i class="trash outline icon"></i></a>
+	        </td>
+	        </tr>
+	        {% endfor %}
+	    </tbody>
+	</table>
+    {% if ecs.paginator.num_pages > 1 %}
+    <div class="pagination">
+        <span class="step-links">
+            {% if ecs.has_previous %}
+                <a href="?page={{ ecs.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ ecs.number }} of {{ ecs.paginator.num_pages }}.
+            </span>
+
+            {% if ecs.has_next %}
+                <a href="?page={{ ecs.next_page_number }}">next</a>
+            {% endif %}
+        </span>
+    </div>
+    {% endif %}
+{% endifequal %}
 </div>
 {% endblock %}
 
@@ -82,6 +109,15 @@ $(window).load(function() {
 		// Animate loader off screen
 		$(".se-pre-con").fadeOut("slow");;
 	});
+</script>
+<script type="text/javascript">
+$('.message .close')
+  .on('click', function() {
+    $(this)
+      .closest('.message')
+      .transition('fade')
+    ;
+  });
 </script>
 {% endblock %}
  

@@ -17,6 +17,7 @@
 	$ etcdctl -C http://192.168.56.2:4001 member list
 	$ for n in {1..9};do etcdctl -C http://192.168.56.2:4001 set /worker/dev/r$n;done
 	$ etcdctl -C 192.168.56.2:4001 ls /worker/dev/
+	$ etcdctl set /foo "Expiring Soon" --ttl 20
 	```
 2. Get started with Django.
 

@@ -6,17 +6,17 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
-from django.template import RequestContext
 from etcdadmin.settings import (
     ETCDCLUSTER_STATE, 
     ETCDCLUSTER_HEALTH, 
     ETCDCLUSTER_VERSION_PREFIX
 )
 from .models import EtcdCluster
-from .forms import EtcdClusterForm
-from utils.parse_tools import parseURL
+from .forms import EtcdClusterForm, KeyForm
+from utils.parse import parseURL
 
 import etcd
+from etcd import EtcdKeyNotFound, EtcdException, EtcdNotFile, EtcdKeyError
 import json
 import requests
 import logging
@@ -36,6 +36,17 @@ def ecs_list(request):
 
     try:
         ecs = EtcdCluster.objects.all()
+        print(ecs.count())
+        paginator = Paginator(ecs, 12) # Show 12 contacts per page
+           
+        page = request.GET.get('page')
+        try:
+            ecs = paginator.page(page)
+        except PageNotAnInteger:
+            ecs = paginator.page(1)
+        except EmptyPage:
+            ecs = paginator.page(paginator.num_pages)
+
     except EtcdCluster.DoesNotExist:
         ecs = None
 
@@ -115,7 +126,7 @@ def delete_ec(request):
     except EtcdCluster.DoesNotExist:
         print("etcd cluster is not found.")
     
-    return HttpResponseRedirect(reverse('home'))
+    return HttpResponseRedirect(reverse('ecs_list'))
 
 
 @login_required
@@ -134,7 +145,7 @@ def check_ec(request):
             if content['health'] == "true":
                 EtcdCluster.objects.filter(serial_number=ecsn).update(status=1)
             else:
-                print("error.....")
+                print("error...")
         except requests.exceptions.ConnectionError as e:
             print(ecsn)
             EtcdCluster.objects.filter(serial_number=ecsn).update(status=2)
@@ -154,24 +165,21 @@ def get_dir(request, ecsn=None):
     try:
         ec = EtcdCluster.objects.get(serial_number=ecsn)
         ec_endpoint = parseURL(ec.cluster_endpoint)
-        eClient = etcd.Client(
-            host=ec_endpoint['host'], 
-            port=ec_endpoint['port'], 
-            protocol=ec_endpoint['scheme'], 
-            allow_reconnect=True
-        )
-        dirs = eClient.read(str(ec.cluster_prefix), recursive=True, sorted=True)
-#         print(objs)
-#         paginator = Paginator(objs.children, 25) # Show 25 contacts per page
-#         
-#         page = request.GET.get('page')
-#         try:
-#             dirs = paginator.page(page)
-#         except PageNotAnInteger:
-#             dirs = paginator.page(1)
-#         except EmptyPage:
-#             dirs = paginator.page(paginator.num_pages)
-        
+        try:
+            eClient = etcd.Client(
+                host=ec_endpoint['host'], 
+                port=ec_endpoint['port'], 
+                protocol=ec_endpoint['scheme'], 
+                allow_reconnect=True
+            )
+            dirs = eClient.read(str(ec.cluster_prefix), recursive=True, sorted=True)
+        except EtcdException as e:
+            messages.add_message(
+                request, 
+                messages.ERROR, 
+                "Could not get the list of servers, maybe you provided the wrong endpoint(%s) to connect to?" % ec.cluster_endpoint
+            )
+            return HttpResponseRedirect(reverse('ecs_list'))
     except EtcdCluster.DoesNotExist:
         print("etcd cluster is not found.")
 
@@ -181,11 +189,44 @@ def get_dir(request, ecsn=None):
 @login_required
 def set_key(request, ecsn=None):
 
-    ec = get_object_or_404(EtcdCluster, serial_number=ecsn)
-    # try:
-    #     eClient.write(str(key), str(value))
-    # except etcd.EtcdKeyNotFound:
-    #     print("key or value could not be none.")
+    try:
+        ec = get_object_or_404(EtcdCluster, serial_number=ecsn)
+        ec_endpoint = parseURL(ec.cluster_endpoint)
+        eClient = etcd.Client(
+            host=ec_endpoint['host'], 
+            port=ec_endpoint['port'], 
+            protocol=ec_endpoint['scheme'], 
+            allow_reconnect=True
+        )
+        form = KeyForm()
+        if request.method == "POST":
+            form = KeyForm(request.POST)
+            if form.is_valid():
+                form.key_path = request.POST['key_path']
+                form.value = request.POST['value']
+                form.ttl = request.POST['ttl']
+                form.is_dir = request.POST.get('is_dir', False)
+                
+                try:
+                    if form.is_dir:
+                        print(form.key_path)
+                        eClient.write(str(form.key_path), None, ttl=form.ttl, dir=True)
+                    elif form.ttl:
+                        print(form.ttl)
+                        eClient.write(str(form.key_path), str(form.value), ttl=form.ttl)
+                    else:
+                        print(form.key_path)
+                        eClient.write(str(form.key_path), str(form.value))
+                except EtcdException as e:
+                    print("key or value could not be none.")
+                return HttpResponseRedirect(reverse('get_dir', kwargs={'ecsn': ecsn}))
+        else:
+            print("something is wrong.")
+            form = KeyForm()
+            
+    except EtcdCluster.DoesNotExist:
+        print("etcd cluster is not found.")
+        form = KeyForm()
 
     return render(request, 'set_key.html', locals())
 
@@ -233,6 +274,7 @@ def delete_key(request, ecsn=None):
         
         try:
             key = request.GET.get('key')
+            print(key)
             eClient.delete(key, dir=True)
             print("dir(%s) has deleted" % key)
             messages.add_message(request, messages.INFO, ("dir(%s) has deleted" % key))
@@ -246,4 +288,9 @@ def delete_key(request, ecsn=None):
     except EtcdCluster.DoesNotExist:
         print("etcd cluster is not online.")
 
-    return HttpResponseRedirect(reverse('getdir', kwargs={'ecsn': ecsn}))
+    return HttpResponseRedirect(reverse('get_dir', kwargs={'ecsn': ecsn}))
+
+
+@login_required
+def lock_key(request, ecsn=None):
+    return  HttpResponseRedirect(reverse('get_dir', kwargs={'ecsn': ecsn}))

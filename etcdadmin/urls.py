@@ -40,6 +40,7 @@ urlpatterns = [
     url(r'^ec-(?P<ecsn>[0-9a-z-]+)/keys/set/$', action_views.set_key, name='set_key'),
     url(r'^ec-(?P<ecsn>[0-9a-z-]+)/keys/update/$', action_views.update_key, name='update_key'),
     url(r'^ec-(?P<ecsn>[0-9a-z-]+)/keys/del/$', action_views.delete_key, name='del_key'),
+    url(r'^ec-(?P<ecsn>[0-9a-z-]+)/keys/lock/$', action_views.lock_key, name='lock_key'),
     
     # etcdadmin restfull api
     #url(r'^api/', 'action.views.api.*', name='api'),

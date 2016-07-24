@@ -68,7 +68,7 @@ a.active {
 }
 .nav-guide {
     margin: 0px;
-    padding: 16px 0 10px;
+    padding: 16px 0 0;
 }
 .nav-guide ul {
     list-style: none;
@@ -87,7 +87,7 @@ a.active {
     padding: 4px 0;
 }
 .main {
-
+	margin-bottom: 24px;
 }
 .ui.table {
     border-radius: 0;
@@ -102,6 +102,15 @@ a.active {
 .etcd-cluster-count-nop {
     margin-top: 85px;
     color: #BBC2C5;
+}
+.no-ecs {
+	background-image: url(/statics/assets/images/no_ecs_list.png);
+    text-align: center;
+    background-color: transparent;
+    height: 268px;
+    width: 418px;
+    position: absolute;
+    margin: 94px 22% 0 22%;
 }
 
 /* add etcd cluster*/
@@ -126,5 +135,5 @@ a.active {
 
 /* common */
 .etcd-cluster-list, .etcd-cluster-dirs, .add-etcd-cluster, .add-new-node {
-    min-height: 446px;
+    min-height: 435px;
 }
