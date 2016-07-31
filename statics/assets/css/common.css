@@ -120,7 +120,7 @@ a.active {
 
 /* add etcd cluster */
 .add-etcd-cluster, .add-new-node {
-    margin-top: 30px;
+    padding-top: 30px;
 }
 
 /* footer */
