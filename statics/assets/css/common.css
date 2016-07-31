@@ -115,12 +115,12 @@ a.active {
 
 /* etcd cluster status */
 .etcd-cluster-status {
-    margin-top: 45px;
+    padding-top: 45px;
 }
 
 /* add etcd cluster */
 .add-etcd-cluster, .add-new-node {
-    padding-top: 30px;
+    margin-top: 30px;
 }
 
 /* footer */
