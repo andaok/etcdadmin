@@ -6,19 +6,22 @@
     <div class="ui breadcrumb">
         <a class="section"><a href="{% url 'ecs_list' %}">Etcd Cluster List</a></a>
         <i class="right angle icon divider"></i>
-        <div class="active section">{{ ec.name }}</div>
+        <div class="active section">
+        	<a href="/ec-{{ ec.serial_number }}/keys/" title="{{ ec.cluster_endpoint }}">{{ ec.name }}</a>
+        </div>
         <i class="right angle icon divider"></i>
         <div class="active section">status</div>
     </div>
 </div>
 {% endblock %}
 {% block content %}
-<div class="etcd-cluster-dirs">
-	<p>{{ content }}</p>
-	<p>{{ content.keys }}</p>
+<div class="etcd-cluster-status">
 	{% for key in content.keys %}
-	<p>{{ key }} - {{ content|get_item:key }}</p>
+    <div class="ui statistic">
+        <div class="value">{{ content|get_item:key }}</div>
+        <div class="label">{{ key|title }}</div>
+    </div>
 	{% endfor %}
-	<p>{{ content|get_item:"getsSuccess" }}</p>
+	<!-- <p>{{ content|get_item:"getsSuccess" }}</p> -->
 </div>
 {% endblock %}
