@@ -25,7 +25,7 @@ urlpatterns = [
     # account
     url(r'^admin/', admin.site.urls),
     url(r'^$', account_views.home, name='home'),
-    url(r'^accounts/login/$', auth_views.login),
+    #url(r'^accounts/login/$', auth_views.login, {'template_name': 'login.html'}),
     #url(r'^accounts/login/$', account_views.login),
     url(r'^accounts/logout/$', auth_views.logout,{'next_page': '/accounts/login'}),
 
