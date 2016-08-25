@@ -4,7 +4,14 @@ from action.models import EtcdCluster
 class EtcdClusterForm(forms.ModelForm):
     class Meta:
         model = EtcdCluster
-        fields = ('name', 'cluster_endpoint', 'cluster_prefix')
+        fields = ('name', 'cluster_prefix', 'cluster_endpoint')
+        widgets = {
+            'name': forms.TextInput(attrs={'placeholder': 'MyECluster_001'}),
+            'cluster_prefix': forms.TextInput(
+                attrs={'placeholder': 'default is startwith /'}),
+            'cluster_endpoint': forms.TextInput(
+                attrs={'placeholder': 'http://192.168.56.2:2379 or https://192.168.56.2:2379'}),
+        }
         
         
 class KeyForm(forms.Form):
