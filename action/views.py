@@ -199,7 +199,7 @@ def set_key(request, ecsn=None):
             allow_reconnect=True
         )
         form = KeyForm()
-        if request.method == "POST":
+        if request.method == "POST":                                
             form = KeyForm(request.POST)
             if form.is_valid():
                 form.key_path = request.POST['key_path']
